@@ -12,56 +12,85 @@ class App extends Component {
     super(props)
 
     this.state = {
-      patientAddress: null,
-      web3: null
+      id: 0,
+      name: "",
+      patientAddress: "",
+      medication: "",
+      date: "",
+      expirationDate: "",
+      web3: null,
+      instance: null,
+      account: null
     }
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
-
     getWeb3
     .then(results => {
       this.setState({
         web3: results.web3
       })
-
-      // Instantiate contract once web3 provided.
       this.instantiateContract()
     })
-    .catch(() => {
-      console.log('Error finding web3.')
+    .catch((e) => {
+      console.log('Error finding web3.', e)
     })
   }
 
   instantiateContract() {
-
     const contract = require('truffle-contract')
     const mediblock = contract(Mediblock)
     mediblock.setProvider(this.state.web3.currentProvider)
-
-    var mediblockInstance
-
-    // Get accounts.
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      mediblock.deployed().then((instance) => {
-        mediblockInstance = instance
-        console.log(mediblockInstance);
-        return mediblockInstance.createPrescription("Karen", accounts[3], "cucumbers", 121212, 111111, {from: accounts[0]})
-      }).then((result) => {
-        console.log(result);
-        return mediblockInstance.getPrescriptionsById(0)
-      }).then((result) => {
-        return this.setState({ patientAddress: result[0] })
-      })
+    var initialMediblockInstance
+    this.state.web3.eth.getAccounts(async (error, accounts) => {
+      console.log("patientAddress", accounts[0])
+      initialMediblockInstance = await mediblock.deployed();
+      this.setState({instance:initialMediblockInstance, account: accounts[0]})
+      console.log("initialMediblockInstance", initialMediblockInstance);
     })
   }
 
+  async handleSubmit(event) {
+    event.preventDefault();
+      const result = await this.state.instance.createPrescription(this.state.name, this.state.patientAddress, this.state.medication, this.state.date, this.state.expirationDate, {from: this.state.account})
+      console.log("result", result)
+  }
+
+
   render() {
     return (
-      <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Mediblock</a>
-        </nav>
+      <div>
+        <p>Create new prescription below:</p>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            name:
+            <input type="text" value={this.state.name} onChange={event => this.setState({name: event.target.value})} />
+          </label>
+          <br/>
+          <label>
+            patient address:
+            <input type="text" value={this.state.patientAddress} onChange={event => this.setState({patientAddress: event.target.value})} />
+          </label>
+          <br/>
+          <label>
+            medication:
+            <input type="text" value={this.state.medication} onChange={event => this.setState({medication: event.target.value})} />
+          </label>
+          <br/>
+          <label>
+            date:
+            <input type="text" value={this.state.date} onChange={event => this.setState({date: event.target.value})} />
+          </label>
+          <br/>
+          <label>
+            expiration date:
+            <input type="text" value={this.state.expirationDate} onChange={event => this.setState({expirationDate: event.target.value})} />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+
 
         <main className="container">
           <div className="pure-g">
@@ -70,7 +99,12 @@ class App extends Component {
               <p>Your Truffle Box is installed and ready.</p>
               <h2>Smart Contract Example</h2>
               <p>See patient address below:</p>
+              <p>The patient id is: {this.state.id}</p>
+              <p>The patient name is: {this.state.name}</p>
               <p>The patient address is: {this.state.patientAddress}</p>
+              <p>The patient medication is: {this.state.medication}</p>
+              <p>The patient date is: {this.state.date}</p>
+              <p>The patient expirationDate is: {this.state.expirationDate}</p>
             </div>
           </div>
         </main>
