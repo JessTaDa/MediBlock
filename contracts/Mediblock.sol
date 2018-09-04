@@ -38,7 +38,7 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
   }
 
   function getPrescriptionsByAddress(address patientAddress) external view returns(uint[] ids) {
-    return patientAddressToPrescriptionId[_patientAddress];
+    return patientAddressToPrescriptionId[patientAddress];
   }
 
   function balanceOf(address _owner) public view returns (uint256 _balance) {

@@ -14,16 +14,15 @@ class App extends Component {
     this.state = {
       id: 0,
       name: "",
-      patientAddress: "",
       medication: "",
       date: "",
       expirationDate: "",
       web3: null,
       instance: null,
-      account: null
+      account: null,
     }
-
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillMount() {
@@ -45,7 +44,6 @@ class App extends Component {
     mediblock.setProvider(this.state.web3.currentProvider)
     var initialMediblockInstance
     this.state.web3.eth.getAccounts(async (error, accounts) => {
-      console.log("patientAddress", accounts[0])
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, account: accounts[0]})
       console.log("initialMediblockInstance", initialMediblockInstance);
@@ -54,10 +52,18 @@ class App extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-      const result = await this.state.instance.createPrescription(this.state.name, this.state.patientAddress, this.state.medication, this.state.date, this.state.expirationDate, {from: this.state.account})
+      const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.date, this.state.expirationDate, {from: this.state.account})
       console.log("result", result)
   }
 
+  handleClick(event) {
+    event.preventDefault();
+      const myPrescriptionIds = this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
+      console.log("myPrescriptionIds", myPrescriptionIds)
+      const myMedications = this.state.instance.getPrescriptionsById(myPrescriptionIds, {from: this.state.account})
+      console.log(myMedications)
+      return myMedications
+    }
 
   render() {
     return (
@@ -69,11 +75,7 @@ class App extends Component {
             <input type="text" value={this.state.name} onChange={event => this.setState({name: event.target.value})} />
           </label>
           <br/>
-          <label>
-            patient address:
-            <input type="text" value={this.state.patientAddress} onChange={event => this.setState({patientAddress: event.target.value})} />
-          </label>
-          <br/>
+
           <label>
             medication:
             <input type="text" value={this.state.medication} onChange={event => this.setState({medication: event.target.value})} />
@@ -97,11 +99,12 @@ class App extends Component {
             <div className="pure-u-1-1">
               <h1>Good to Go!</h1>
               <p>Your Truffle Box is installed and ready.</p>
+
+                <button onClick={this.handleClick}></button>
               <h2>Smart Contract Example</h2>
               <p>See patient address below:</p>
               <p>The patient id is: {this.state.id}</p>
               <p>The patient name is: {this.state.name}</p>
-              <p>The patient address is: {this.state.patientAddress}</p>
               <p>The patient medication is: {this.state.medication}</p>
               <p>The patient date is: {this.state.date}</p>
               <p>The patient expirationDate is: {this.state.expirationDate}</p>
