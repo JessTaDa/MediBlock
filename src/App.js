@@ -20,6 +20,7 @@ class App extends Component {
       web3: null,
       instance: null,
       account: null,
+      prescriptionArray: []
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -50,7 +51,6 @@ class App extends Component {
     })
   }
 
-
   async handleSubmit(event) {
     event.preventDefault();
       const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.date, this.state.expirationDate, {from: this.state.account})
@@ -61,15 +61,15 @@ class App extends Component {
     event.preventDefault();
       const myPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
       console.log("myPrescriptionIds", myPrescriptionIds)
-      // var prescriptionArray = [];
+      var prescriptionArray = this.state.prescriptionArray
+      console.log("prescriptionArray1", prescriptionArray)
 
       myPrescriptionIds.forEach(async(prescription, index) => {
-        console.log("HELLOOO")
-      	console.log("index", index);
-      	console.log("prescription", prescription);
-        const myMedications = await this.state.instance.getPrescriptionsById(myPrescriptionIds, {from: this.state.account})
-        console.log("myMedications", myMedications)
-        return myMedications
+        const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
+        console.log("myMedications", myMedications[1])
+        prescriptionArray.push(myMedications[1])
+        console.log("prescriptionArray2", prescriptionArray)
+        this.setState({prescriptionArray: prescriptionArray})
       })
     }
 
@@ -100,14 +100,11 @@ class App extends Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-
-
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
               <h1>Good to Go!</h1>
               <p>Your Truffle Box is installed and ready.</p>
-
                 <button onClick={this.handleClick}></button>
               <h2>Smart Contract Example</h2>
               <p>See patient address below:</p>
@@ -116,6 +113,7 @@ class App extends Component {
               <p>The patient medication is: {this.state.medication}</p>
               <p>The patient date is: {this.state.date}</p>
               <p>The patient expirationDate is: {this.state.expirationDate}</p>
+              <p>The patient prescriptionArray is: {this.state.prescriptionArray}</p>
             </div>
           </div>
         </main>
