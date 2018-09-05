@@ -50,19 +50,27 @@ class App extends Component {
     })
   }
 
+
   async handleSubmit(event) {
     event.preventDefault();
       const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.date, this.state.expirationDate, {from: this.state.account})
       console.log("result", result)
   }
 
-  handleClick(event) {
+  async handleClick(event) {
     event.preventDefault();
-      const myPrescriptionIds = this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
+      const myPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
       console.log("myPrescriptionIds", myPrescriptionIds)
-      const myMedications = this.state.instance.getPrescriptionsById(myPrescriptionIds, {from: this.state.account})
-      console.log(myMedications)
-      return myMedications
+      // var prescriptionArray = [];
+
+      myPrescriptionIds.forEach(async(prescription, index) => {
+        console.log("HELLOOO")
+      	console.log("index", index);
+      	console.log("prescription", prescription);
+        const myMedications = await this.state.instance.getPrescriptionsById(myPrescriptionIds, {from: this.state.account})
+        console.log("myMedications", myMedications)
+        return myMedications
+      })
     }
 
   render() {
