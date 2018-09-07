@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import Mediblock from '../build/contracts/Mediblock.json'
 import getWeb3 from './utils/getWeb3'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -15,15 +19,16 @@ class App extends Component {
       id: 0,
       name: "",
       medication: "",
-      date: "",
-      expirationDate: "",
+      startDate: moment(),
       web3: null,
       instance: null,
       account: null,
-      prescriptionArray: []
+      prescriptionArray: [],
+      expirationDate: moment()
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
@@ -53,7 +58,7 @@ class App extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-      const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.date, this.state.expirationDate, {from: this.state.account})
+      const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.state.account})
       console.log("result", result)
   }
 
@@ -69,8 +74,14 @@ class App extends Component {
         console.log("myMedications", myMedications[1])
         prescriptionArray.push(myMedications[1])
         console.log("prescriptionArray2", prescriptionArray)
-        this.setState({prescriptionArray: prescriptionArray})
+        this.setState({prescriptionArray: prescriptionArray + ", "})
       })
+    }
+
+    handleChange(date) {
+      this.setState({
+        expirationDate: moment(date)
+      });
     }
 
   render() {
@@ -83,7 +94,6 @@ class App extends Component {
             <input type="text" value={this.state.name} onChange={event => this.setState({name: event.target.value})} />
           </label>
           <br/>
-
           <label>
             medication:
             <input type="text" value={this.state.medication} onChange={event => this.setState({medication: event.target.value})} />
@@ -91,29 +101,26 @@ class App extends Component {
           <br/>
           <label>
             date:
-            <input type="text" value={this.state.date} onChange={event => this.setState({date: event.target.value})} />
+            <input type="text" value={this.state.startDate} onChange={event => this.setState({startDate: event.target.value})} />
           </label>
           <br/>
           <label>
             expiration date:
-            <input type="text" value={this.state.expirationDate} onChange={event => this.setState({expirationDate: event.target.value})} />
+            <DatePicker selected={this.state.expirationDate} onChange={this.handleChange}/>
           </label>
           <input type="submit" value="Submit" />
         </form>
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-                <button onClick={this.handleClick}></button>
-              <h2>Smart Contract Example</h2>
+                <button value="button" onClick={this.handleClick}></button>
               <p>See patient address below:</p>
               <p>The patient id is: {this.state.id}</p>
               <p>The patient name is: {this.state.name}</p>
               <p>The patient medication is: {this.state.medication}</p>
-              <p>The patient date is: {this.state.date}</p>
-              <p>The patient expirationDate is: {this.state.expirationDate}</p>
+              <p>The patient startDate is: {this.state.startDate.toString()}</p>
               <p>The patient prescriptionArray is: {this.state.prescriptionArray}</p>
+              <p>The patient expirationDate is: {this.state.expirationDate.toString()}</p>
             </div>
           </div>
         </main>

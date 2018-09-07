@@ -10,12 +10,11 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
     string name;
     address patientAddress;
     string medication;
-    uint date;
+    uint StartDate;
     uint expirationDate;
   }
 
-  /* mapping (uint => address) prescriptionToOwner;
-  mapping (address => uint) ownerPrescriptionCount; */
+
   mapping(address => uint[]) patientAddressToPrescriptionId;
 
   Prescription[] public prescriptions;
@@ -25,11 +24,7 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
   function createPrescription(string _name, address _patientAddress, string _medication, uint _date, uint _expirationDate) external {
     require( _patientAddress == msg.sender);
     uint id = prescriptions.push(Prescription(_name, _patientAddress, _medication, _date, _expirationDate )) - 1;
-    /* prescriptionToOwner[id] = msg.sender;
-    ownerPrescriptionCount[msg.sender]++; */
-
     patientAddressToPrescriptionId[_patientAddress].push(id);
-
     emit NewPrescription(id, _name, _patientAddress, _medication, _date, _expirationDate);
   }
 
@@ -40,6 +35,11 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
   function getPrescriptionsByAddress(address patientAddress) external view returns(uint[] ids) {
     return patientAddressToPrescriptionId[patientAddress];
   }
+
+  /* function isValid(uint expirationDate) external view returns (string isValid) {
+    if expirationDate > date
+    return true
+  } */
 
   function balanceOf(address _owner) public view returns (uint256 _balance) {
     revert();
