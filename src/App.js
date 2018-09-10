@@ -70,7 +70,7 @@ class App extends Component {
         const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
         console.log("myMedications", myMedications)
         prescriptionArray.push(myMedications[1])
-        this.setState({prescriptionArray: prescriptionArray + ", "})
+        this.setState({prescriptionArray: prescriptionArray})
         const expiration = await this.state.instance.isValid(index)
         console.log("expiration", expiration)
       })
