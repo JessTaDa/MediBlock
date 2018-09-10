@@ -36,10 +36,12 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
     return patientAddressToPrescriptionId[patientAddress];
   }
 
-  /* function isValid(uint expirationDate) external view returns (string isValid) {
-    if expirationDate > date
-    return true
-  } */
+  function isValid(uint id) external view returns (bool isValid) {
+    if (prescriptions[id].expirationDate < block.timestamp){
+      return false;
+    }
+      return true;
+  }
 
   function balanceOf(address _owner) public view returns (uint256 _balance) {
     revert();

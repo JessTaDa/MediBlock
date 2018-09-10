@@ -24,7 +24,8 @@ class App extends Component {
       instance: null,
       account: null,
       prescriptionArray: [],
-      expirationDate: moment()
+      expirationDate: moment(),
+      isValid: true
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -52,7 +53,6 @@ class App extends Component {
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, account: accounts[0]})
-      console.log("initialMediblockInstance", initialMediblockInstance);
     })
   }
 
@@ -65,16 +65,14 @@ class App extends Component {
   async handleClick(event) {
     event.preventDefault();
       const myPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
-      console.log("myPrescriptionIds", myPrescriptionIds)
       var prescriptionArray = this.state.prescriptionArray
-      console.log("prescriptionArray1", prescriptionArray)
-
       myPrescriptionIds.forEach(async(prescription, index) => {
         const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
-        console.log("myMedications", myMedications[1])
+        console.log("myMedications", myMedications)
         prescriptionArray.push(myMedications[1])
-        console.log("prescriptionArray2", prescriptionArray)
         this.setState({prescriptionArray: prescriptionArray + ", "})
+        const expiration = await this.state.instance.isValid(index)
+        console.log("expiration", expiration)
       })
     }
 
@@ -82,6 +80,15 @@ class App extends Component {
       this.setState({
         expirationDate: moment(date)
       });
+    }
+
+    isValid(expirationDate) {
+      if (moment().isAfter(expirationDate)){
+        this.setState({
+          isValid: false
+        })
+
+      }
     }
 
   render() {
