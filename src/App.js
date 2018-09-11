@@ -1,20 +1,14 @@
-import React, { Component } from 'react'
-import Mediblock from '../build/contracts/Mediblock.json'
-import getWeb3 from './utils/getWeb3'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
+import React, { Component } from 'react';
+import Mediblock from '../build/contracts/Mediblock.json';
+import getWeb3 from './utils/getWeb3';
+import moment from 'moment';
+import Prescription from './components/Prescription';
 
 import 'react-datepicker/dist/react-datepicker.css';
-
-import './css/oswald.css'
-import './css/open-sans.css'
-import './css/pure-min.css'
-import './App.css'
 
 class App extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       id: 0,
       name: "",
@@ -56,6 +50,13 @@ class App extends Component {
     })
   }
 
+  handleChange(date) {
+    console.log("date", date)
+        this.setState({
+          expirationDate: moment(date)
+        });
+      }
+
   async handleSubmit(event) {
     event.preventDefault();
       const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.state.account})
@@ -76,64 +77,23 @@ class App extends Component {
       })
     }
 
-    handleChange(date) {
-      this.setState({
-        expirationDate: moment(date)
-      });
-    }
-
-    isValid(expirationDate) {
-      if (moment().isAfter(expirationDate)){
-        this.setState({
-          isValid: false
-        })
-
-      }
-    }
-
   render() {
-    return (
+     return (
       <div>
-        <p>Create new prescription below:</p>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            name:
-            <input type="text" value={this.state.name} onChange={event => this.setState({name: event.target.value})} />
-          </label>
-          <br/>
-          <label>
-            medication:
-            <input type="text" value={this.state.medication} onChange={event => this.setState({medication: event.target.value})} />
-          </label>
-          <br/>
-          <label>
-            date:
-            <input type="text" value={this.state.startDate} onChange={event => this.setState({startDate: event.target.value})} />
-          </label>
-          <br/>
-          <label>
-            expiration date:
-            <DatePicker selected={this.state.expirationDate} onChange={this.handleChange}/>
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-                <button value="button" onClick={this.handleClick}></button>
-              <p>See patient address below:</p>
-              <p>The patient id is: {this.state.id}</p>
-              <p>The patient name is: {this.state.name}</p>
-              <p>The patient medication is: {this.state.medication}</p>
-              <p>The patient startDate is: {this.state.startDate.toString()}</p>
-              <p>The patient prescriptionArray is: {this.state.prescriptionArray}</p>
-              <p>The patient expirationDate is: {this.state.expirationDate.toString()}</p>
-            </div>
-          </div>
-        </main>
+      <button value="button" onClick={this.handleClick}></button>
+        <Prescription
+        id={this.state.id}
+        name={this.state.name}
+        medication={this.state.medication}
+        startDate={this.state.startDate}
+        expirationDate={this.state.expirationDate}
+        handleChange={this.handleChange}
+        handleSubmit={this.handleSubmit}
+        />
       </div>
     );
   }
 }
+
 
 export default App
