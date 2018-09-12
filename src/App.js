@@ -17,7 +17,7 @@ class App extends Component {
       startDate: moment(),
       web3: null,
       instance: null,
-      account: "cantBeEmpty",
+      account: null,
       prescriptionArray: [],
       expirationDate: moment(),
       isValid: true
@@ -49,12 +49,6 @@ class App extends Component {
     })
   }
 
-  // async handleSubmit(event) {
-  //   event.preventDefault();
-  //   console.log("this.state@handleSubmit", this.state)
-  //     const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.state.account})
-  //     console.log("result", result)
-  // }
 
   async handleClick(event) {
     event.preventDefault();

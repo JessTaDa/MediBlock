@@ -15,26 +15,16 @@ export default class CreatePrescription extends React.Component {
       medication: "",
       startDate: moment(),
       expirationDate: moment(),
-      // account: this.props.account
-      // instance: this.props.instance
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async handleSubmit(event) {
     event.preventDefault();
-    // console.log("this.props@handleSubmit", this.props)
-    // console.log("this.state@handleSubmit", this.state)
-    // console.log("this.state.medication", this.state.medication)
-      let result = await this.props.instance.createPrescription(this.state.name, this.state.account, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.state.account})
+      let result = await this.props.instance.createPrescription(this.state.name, this.props.account, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.props.account})
       console.log("result", result)
   }
 
-  handleChange(date) {
-        this.setState({
-          expirationDate: moment(date)
-        });
-      }
 
   render(props) {
     return (
@@ -59,7 +49,7 @@ export default class CreatePrescription extends React.Component {
           <br/>
           <label>
             expiration date:
-            <DatePicker selected={this.state.expirationDate} onChange={(event) => this.handleChange(event.target.value)}/>
+            <DatePicker selected={this.state.expirationDate} onChange={(date) => this.setState({expirationDate: moment(date)})}/>
           </label>
           <input type="submit" value="Submit" />
         </form>
