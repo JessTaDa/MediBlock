@@ -89,7 +89,6 @@ class App extends Component {
         startDate={this.state.startDate}
         expirationDate={this.state.expirationDate}
         handleChange={this.handleChange}
-        // handleSubmit={this.handleSubmit}
         instance={this.state.instance}
         prescriptionArray={this.state.prescriptionArray}
         />
