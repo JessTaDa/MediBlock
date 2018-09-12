@@ -28,8 +28,8 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
     emit NewPrescription(id, _name, _patientAddress, _medication, _date, _expirationDate);
   }
 
-  function getPrescriptionsById(uint id) external view returns (address patientAddress, string medication) {
-    return (prescriptions[id].patientAddress, prescriptions[id].medication);
+  function getPrescriptionsById(uint id) external view returns (string _name, address _patientAddress, string _medication, uint _date, uint _expirationDate) {
+    return (prescriptions[id].name, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate);
   }
 
   function getPrescriptionsByAddress(address patientAddress) external view returns(uint[] ids) {
