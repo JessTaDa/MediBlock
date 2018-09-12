@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Mediblock from '../build/contracts/Mediblock.json';
 import getWeb3 from './utils/getWeb3';
 import moment from 'moment';
-import Prescription from './components/Prescription';
+import CreatePrescription from './components/CreatePrescription';
+import DisplayPrescriptions from './components/DisplayPrescriptions';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -11,7 +12,7 @@ class App extends Component {
     super(props)
     this.state = {
       id: 0,
-      name: "",
+      name: "la",
       medication: "",
       startDate: moment(),
       web3: null,
@@ -21,9 +22,7 @@ class App extends Component {
       expirationDate: moment(),
       isValid: true
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
@@ -50,45 +49,49 @@ class App extends Component {
     })
   }
 
-  handleChange(date) {
-    console.log("date", date)
-        this.setState({
-          expirationDate: moment(date)
-        });
-      }
-
-  async handleSubmit(event) {
-    event.preventDefault();
-      const result = await this.state.instance.createPrescription(this.state.name, this.state.account, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.state.account})
-      console.log("result", result)
-  }
 
   async handleClick(event) {
     event.preventDefault();
       const myPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
-      var prescriptionArray = this.state.prescriptionArray
-      myPrescriptionIds.forEach(async(prescription, index) => {
-        const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
-        console.log("myMedications", myMedications)
-        prescriptionArray.push(myMedications[1])
-        this.setState({prescriptionArray: prescriptionArray})
-        const expiration = await this.state.instance.isValid(index)
-        console.log("expiration", expiration)
-      })
+      console.log("myPrescriptionIds", myPrescriptionIds)
+      // var prescriptionArray = this.state.prescriptionArray
+      // myPrescriptionIds.forEach(async(prescription, index) => {
+      //   const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
+      //   console.log("myMedications", myMedications)
+      //   // prescriptionArray.push(myMedications[1])
+      //   // prescriptionArray.push(myMedications)
+      //   // console.log("prescriptionArray", prescriptionArray)
+      //
+      //   this.setState({prescriptionArray: prescriptionArray})
+      //   const expiration = await this.state.instance.isValid(index)
+      //   console.log("expiration", expiration)
+      // })
+
+      myPrescriptionIds.map( async (prescriptionId) =>
+        console.log("this.state", this.state)
+        // console.log(await this.state.instance.getPrescriptionsById(prescriptionId, {from: this.state.account})
+        )
     }
 
   render() {
      return (
       <div>
       <button value="button" onClick={this.handleClick}></button>
-        <Prescription
+        <CreatePrescription
+        instance={this.state.instance}
+        account={this.state.account}
+        />
+
+        <DisplayPrescriptions
         id={this.state.id}
         name={this.state.name}
         medication={this.state.medication}
         startDate={this.state.startDate}
         expirationDate={this.state.expirationDate}
         handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
+        // handleSubmit={this.handleSubmit}
+        instance={this.state.instance}
+        prescriptionArray={this.state.prescriptionArray}
         />
       </div>
     );
