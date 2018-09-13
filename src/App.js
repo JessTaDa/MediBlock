@@ -20,7 +20,8 @@ class App extends Component {
       account: null,
       prescriptionArray: [],
       expirationDate: moment(),
-      isValid: true
+      isValid: true,
+      myPrescriptionIds: []
     }
     this.handleClick = this.handleClick.bind(this);
   }
@@ -49,52 +50,38 @@ class App extends Component {
     })
   }
 
-
   async handleClick(event) {
     event.preventDefault();
-      const myPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
-      console.log("myPrescriptionIds", myPrescriptionIds)
-      // var prescriptionArray = this.state.prescriptionArray
-      // myPrescriptionIds.forEach(async(prescription, index) => {
-      //   const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
-      //   console.log("myMedications", myMedications)
-      //   // prescriptionArray.push(myMedications[1])
-      //   // prescriptionArray.push(myMedications)
-      //   // console.log("prescriptionArray", prescriptionArray)
-      //
-      //   this.setState({prescriptionArray: prescriptionArray})
-      //   const expiration = await this.state.instance.isValid(index)
-      //   console.log("expiration", expiration)
-      // })
+    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
+    let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
 
-      myPrescriptionIds.map( async (prescriptionId) =>
-        console.log("this.state", this.state)
-        // console.log(await this.state.instance.getPrescriptionsById(prescriptionId, {from: this.state.account})
-        )
+      this.setState({myPrescriptionIds: myPrescriptionIds})
+      console.log("this.state.myPrescriptionIds", this.state.myPrescriptionIds)
+      var prescriptionArray = this.state.prescriptionArray
+      myPrescriptionIds.forEach(async(prescription, index) => {
+        const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
+        console.log("myMedications", myMedications)
+
+        this.setState({prescriptionArray: prescriptionArray})
+        const expiration = await this.state.instance.isValid(index)
+        console.log("expiration", expiration)
+      })
     }
 
   render() {
      return (
-      <div>
-      <button value="button" onClick={this.handleClick}></button>
-        <CreatePrescription
-        instance={this.state.instance}
-        account={this.state.account}
-        />
-
-        <DisplayPrescriptions
-        id={this.state.id}
-        name={this.state.name}
-        medication={this.state.medication}
-        startDate={this.state.startDate}
-        expirationDate={this.state.expirationDate}
-        handleChange={this.handleChange}
-        // handleSubmit={this.handleSubmit}
-        instance={this.state.instance}
-        prescriptionArray={this.state.prescriptionArray}
-        />
-      </div>
-    );
+       <div>
+         <CreatePrescription
+         id={this.state.id}
+         instance={this.state.instance}
+         account={this.state.account}
+         />
+         {this.state.myPrescriptionIds.map((prescriptionId, index) =>
+           <DisplayPrescriptions Id={prescriptionId} instance={this.state.instance}/>
+         )}
+        <button value="button" onClick={this.handleClick}></button>
+       </div>
+    )
   }
 }
 
