@@ -20,7 +20,6 @@ class App extends Component {
       account: null,
       prescriptionArray: [],
       expirationDate: moment(),
-      isValid: true,
       myPrescriptionIds: []
     }
     this.handleClick = this.handleClick.bind(this);
@@ -54,19 +53,8 @@ class App extends Component {
     event.preventDefault();
     let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
-
-      this.setState({myPrescriptionIds: myPrescriptionIds})
-      console.log("this.state.myPrescriptionIds", this.state.myPrescriptionIds)
-      var prescriptionArray = this.state.prescriptionArray
-      myPrescriptionIds.forEach(async(prescription, index) => {
-        const myMedications = await this.state.instance.getPrescriptionsById(index, {from: this.state.account})
-        console.log("myMedications", myMedications)
-
-        this.setState({prescriptionArray: prescriptionArray})
-        const expiration = await this.state.instance.isValid(index)
-        console.log("expiration", expiration)
-      })
-    }
+    this.setState({myPrescriptionIds: myPrescriptionIds})
+  }
 
   render() {
      return (
