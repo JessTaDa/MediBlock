@@ -45,11 +45,12 @@
     "truffle-solidity-loader": "^0.1.0",
     "url-loader": "0.5.7",
     "webpack": "1.14.0",
-    "webpack-dev-server": "1.16.2",
+    "webpack-dev-server": "^3.1.8",
     "webpack-manifest-plugin": "1.1.0",
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "@material-ui/core": "^3.0.3",
     "dotenv": "^2.0.0",
     "moment": "^2.22.2",
     "react": "^15.4.2",

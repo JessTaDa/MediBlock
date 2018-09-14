@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 export default class DisplayPrescriptions extends React.Component {
   constructor(props) {
@@ -33,8 +34,8 @@ export default class DisplayPrescriptions extends React.Component {
         <li>name: {this.state.name}</li>
         <li>address: {this.state.address}</li>
         <li>medication: {this.state.medication}</li>
-        <li>startDate: {JSON.stringify(this.state.startDate)}</li>
-        <li>expirationDate: {JSON.stringify(this.state.expirationDate)}</li>
+        <li>startDate: {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</li>
+        <li>expirationDate: {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</li>
         <li>isValid: {JSON.stringify(this.state.isValid)}</li>
         <br/>
         <br/>
