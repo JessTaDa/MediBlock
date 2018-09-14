@@ -35,15 +35,10 @@ export default class CreatePrescription extends React.Component {
           </label>
           <br/>
           <label>
-            date:
-            <input type="text" value={this.state.startDate} onChange={(event) => this.setState({startDate: event.target.value})} />
-          </label>
-          <br/>
-          <label>
             expiration date:
             <DatePicker selected={this.state.expirationDate} onChange={(date) => this.setState({expirationDate: moment(date)})}/>
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Create Prescription" />
         </form>
       </div>
     );

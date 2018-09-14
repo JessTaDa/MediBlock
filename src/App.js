@@ -5,6 +5,7 @@ import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
 
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 class App extends Component {
@@ -67,7 +68,7 @@ class App extends Component {
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
            <DisplayPrescriptions Id={prescriptionId} instance={this.state.instance}/>
          )}
-        <button value="button" onClick={this.handleClick}></button>
+        <button value="button" onClick={this.handleClick}>See Prescriptions</button>
        </div>
     )
   }
