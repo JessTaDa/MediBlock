@@ -6,7 +6,8 @@ export default class DisplayPrescriptions extends React.Component {
     super(props)
     this.state = {
       name: "",
-      address: null,
+      doctorAddress: null,
+      patientAddress: null,
       medication: "",
       startDate: null,
       expirationDate: null,
@@ -17,13 +18,15 @@ export default class DisplayPrescriptions extends React.Component {
   async componentDidMount() {
     let prescription = await this.props.instance.getPrescriptionsById(this.props.Id)
     let expiration = await this.props.instance.isValid(this.props.Id)
+    console.log("prescription", prescription)
 
     this.setState({
       name: prescription[0],
-      address: prescription[1],
-      medication: prescription[2],
-      startDate: prescription[3],
-      expirationDate: prescription[4],
+      doctorAddress: prescription[1],
+      patientAddress: prescription[2],
+      medication: prescription[3],
+      startDate: prescription[4],
+      expirationDate: prescription[5],
       isValid: expiration
     })
   }
@@ -32,12 +35,12 @@ export default class DisplayPrescriptions extends React.Component {
     return (
       <div>
         <li>name: {this.state.name}</li>
-        <li>address: {this.state.address}</li>
+        <li>doctorAddress: {this.state.doctorAddress}</li>
+        <li>patientAddress: {this.state.patientAddress}</li>
         <li>medication: {this.state.medication}</li>
         <li>startDate: {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</li>
         <li>expirationDate: {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</li>
         <li>isValid: {JSON.stringify(this.state.isValid)}</li>
-        <br/>
         <br/>
       </div>
     );

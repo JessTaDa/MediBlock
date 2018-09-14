@@ -1,39 +1,38 @@
 pragma solidity ^0.4.24;
 /* import "openzeppelin-solidity/contracts/token/ERC721/ERC721Basic.sol"; */
-
 /* contract Mediblock is ERC721Basic { */
 contract Mediblock {
 
-event NewPrescription(uint id, string name, address patientAddress, string medication, uint date, uint _expirationDate);
+event NewPrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate);
 
   struct Prescription {
     string name;
+    address doctorAddress;
     address patientAddress;
     string medication;
     uint StartDate;
     uint expirationDate;
   }
 
-
-  mapping(address => uint[]) patientAddressToPrescriptionId;
+  mapping(address => uint[]) doctorAddressToPrescriptionId;
 
   Prescription[] public prescriptions;
 
   constructor() public {}
 
-  function createPrescription(string _name, address _patientAddress, string _medication, uint _date, uint _expirationDate) external {
-    require( _patientAddress == msg.sender);
-    uint id = prescriptions.push(Prescription(_name, _patientAddress, _medication, _date, _expirationDate )) - 1;
-    patientAddressToPrescriptionId[_patientAddress].push(id);
-    emit NewPrescription(id, _name, _patientAddress, _medication, _date, _expirationDate);
+  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate) external {
+    require( _doctorAddress == msg.sender);
+    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate )) - 1;
+    doctorAddressToPrescriptionId[_doctorAddress].push(id);
+    emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate);
   }
 
-  function getPrescriptionsById(uint id) external view returns (string _name, address _patientAddress, string _medication, uint _date, uint _expirationDate) {
-    return (prescriptions[id].name, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate);
+  function getPrescriptionsById(uint id) external view returns (string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate) {
+    return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate);
   }
 
-  function getPrescriptionsByAddress(address patientAddress) external view returns(uint[] ids) {
-    return patientAddressToPrescriptionId[patientAddress];
+  function getPrescriptionsByAddress(address doctorAddress) external view returns(uint[] ids) {
+    return doctorAddressToPrescriptionId[doctorAddress];
   }
 
   function isValid(uint id) external view returns (bool isValid) {
@@ -85,7 +84,6 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
       revert();
     }
 
-
   function safeTransferFrom(
     address _from,
     address _to,
@@ -95,6 +93,5 @@ event NewPrescription(uint id, string name, address patientAddress, string medic
     public {
       revert();
     }
-
 
 }

@@ -5,7 +5,6 @@ import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
 
-
 import 'react-datepicker/dist/react-datepicker.css';
 
 class App extends Component {
@@ -18,7 +17,7 @@ class App extends Component {
       startDate: moment(),
       web3: null,
       instance: null,
-      account: null,
+      doctorAddress: null,
       prescriptionArray: [],
       expirationDate: moment(),
       myPrescriptionIds: []
@@ -46,14 +45,17 @@ class App extends Component {
     var initialMediblockInstance
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
-      this.setState({instance:initialMediblockInstance, account: accounts[0]})
+      this.setState({instance:initialMediblockInstance, doctorAddress: accounts[0]})
+      console.log("accounts", accounts)
     })
   }
 
   async handleClick(event) {
     event.preventDefault();
-    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.account, {from: this.state.account})
+    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
+    console.log("rawPrescriptionIds", rawPrescriptionIds)
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
+    console.log("myPrescriptionIds", myPrescriptionIds)
     this.setState({myPrescriptionIds: myPrescriptionIds})
   }
 
@@ -63,7 +65,7 @@ class App extends Component {
          <CreatePrescription
          id={this.state.id}
          instance={this.state.instance}
-         account={this.state.account}
+         doctorAddress={this.state.doctorAddress}
          />
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
            <DisplayPrescriptions Id={prescriptionId} instance={this.state.instance}/>
