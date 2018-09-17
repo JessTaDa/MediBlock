@@ -14,7 +14,7 @@ Create a ERC-721 compatible contract representing a prescription with the follow
 | Patient Address:  | Address
 |  Medication: | String  
 |  Date Created: | Date (Integer)
- |
+
 At this stage, prescriptions should be made by the patient itself, and should not be able to be transferred.
 
 Create the contract and a few test cases.
@@ -33,7 +33,7 @@ Add an expiration date to the prescription.
 |  Medication: | String  
 |  Date Created: | Date (Integer)
 | Expiration Date:  | Date (Integer)
- |
+
 The contract should have a method **isValid()** that returns true if the expiration date hasn’t passed.
 
 Update the Dapp to display the expiration date and whether the prescription is still valid.
@@ -50,7 +50,7 @@ Add a doctor to the prescription. Now doctors can create prescriptions and assig
 |  Medication: | String  
 |  Date Created: | Date (Integer)
 | Expiration Date:  | Date (Integer)
- |
+
 Update the Dapp to allow doctors to create prescriptions.
 At this stage, any user can act as a doctor.
 
@@ -66,7 +66,7 @@ Allow doctors to invalidate prescriptions that they have issued.
 |  Date Created: | Date (Integer)
 | Expiration Date:  | Date (Integer)
 | Is Invalidated:  | Boolean
- |
+
 
 Invalidated prescriptions should return false for **isValid().** Update the Dapp to display invalid prescriptions and allow doctors to revoke them.
 
@@ -85,7 +85,7 @@ Add a number of refills, which is set by the doctor when creating the prescripti
 | Expiration Date:  | Date (Integer)
 | Is Invalidated:  | Boolean
 | Refills:  | Integer
- |
+ 
 
 A user can send their prescription to a “pharmacist” by calling **sendToPharmacist()**. This should emit a DispenseRequest event which contains the address of the pharmacist.
 
