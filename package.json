@@ -55,7 +55,8 @@
     "moment": "^2.22.2",
     "react": "^15.4.2",
     "react-datepicker": "^1.6.0",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-toggle": "^4.0.2"
   },
   "scripts": {
     "start": "node scripts/start.js",

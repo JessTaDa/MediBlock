@@ -4,8 +4,10 @@ import getWeb3 from './utils/getWeb3';
 import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
+import Toggle from 'react-toggle';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import './css/toggle.css'
 
 class App extends Component {
   constructor(props) {
@@ -20,9 +22,12 @@ class App extends Component {
       doctorAddress: null,
       prescriptionArray: [],
       expirationDate: moment(),
-      myPrescriptionIds: []
+      myPrescriptionIds: [],
+      validity: true
     }
     this.handleClick = this.handleClick.bind(this);
+    this.handleValidity = this.handleValidity.bind(this);
+
   }
 
   componentWillMount() {
@@ -59,6 +64,18 @@ class App extends Component {
     this.setState({myPrescriptionIds: myPrescriptionIds})
   }
 
+  async handleValidity(event) {
+    if (this.state.validity === true) {
+      await this.setState({
+        validity: false
+
+      })
+      return
+    } await this.setState({
+        validity: true
+      })
+  }
+
   render() {
      return (
        <div>
@@ -71,6 +88,10 @@ class App extends Component {
            <DisplayPrescriptions Id={prescriptionId} instance={this.state.instance}/>
          )}
         <button value="button" onClick={this.handleClick}>See Prescriptions</button>
+        <label>
+          <Toggle defaultChecked={this.state.validity} onChange={this.handleValidity} />
+        </label>
+        {console.log("validityRender", this.state.validity)}
        </div>
     )
   }
