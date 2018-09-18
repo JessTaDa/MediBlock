@@ -1,6 +1,6 @@
 # **Prescriptions Dapp Project Requirements**
 
-The goal is to have a Dapp backed by an ethereum smart contract that can replace paper prescriptions.
+The goal is to have a Dapp backed by an ethereum smart contract that can replace paper prescriptions. This is a learning exercise to get familiar with building DAPPS and there will be a follow on tutorial to come.
 
 
 ## Stage 1: Contract
