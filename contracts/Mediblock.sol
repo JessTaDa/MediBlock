@@ -3,7 +3,10 @@ pragma solidity ^0.4.24;
 /* contract Mediblock is ERC721Basic { */
 contract Mediblock {
 
-event NewPrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate);
+event NewPrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate, bool isValid);
+event UpdatePrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate, bool isValid);
+
+
 
   struct Prescription {
     string name;
@@ -12,6 +15,7 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
     string medication;
     uint StartDate;
     uint expirationDate;
+    bool isValid;
   }
 
   mapping(address => uint[]) doctorAddressToPrescriptionId;
@@ -20,27 +24,38 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
 
   constructor() public {}
 
-  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate) external {
+  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _isValid) external {
     require( _doctorAddress == msg.sender);
-    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate )) - 1;
+    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid )) - 1;
     doctorAddressToPrescriptionId[_doctorAddress].push(id);
-    emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate);
+    emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid);
   }
 
-  function getPrescriptionsById(uint id) external view returns (string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate) {
-    return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate);
+  function updatePrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _isValid) external {
+    require( _doctorAddress == msg.sender);
+    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid )) - 1;
+    doctorAddressToPrescriptionId[_doctorAddress].push(id);
+    emit UpdatePrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid);
+  }
+
+
+  function getPrescriptionsById(uint id) external view returns (string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _isValid) {
+    return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate, prescriptions[id].isValid);
   }
 
   function getPrescriptionsByAddress(address doctorAddress) external view returns(uint[] ids) {
     return doctorAddressToPrescriptionId[doctorAddress];
   }
 
-  function isValid(uint id) external view returns (bool isValid) {
-    if (prescriptions[id].expirationDate < block.timestamp){
+  function validity(uint id) external view returns (bool isValid) {
+    if (prescriptions[id].expirationDate < block.timestamp
+      || prescriptions[id].isValid == false) {
       return false;
-    }
+    } else {
       return true;
+    }
   }
+
 
   function balanceOf(address _owner) public view returns (uint256 _balance) {
     revert();

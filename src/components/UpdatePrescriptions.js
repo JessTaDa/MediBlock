@@ -1,16 +1,17 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default class CreatePrescription extends React.Component {
+export default class UpdatePrescription extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       id: "",
       name: "",
       doctorAddress: "",
-      patientAddress: "",
+      patientAddress: 123,
       medication: "",
       startDate: moment(),
       expirationDate: moment(),
@@ -21,11 +22,11 @@ export default class CreatePrescription extends React.Component {
   render(props) {
     return (
       <div>
-        <p>Create new prescription below:</p>
+        <p>Update your prescription below:</p>
         <form onSubmit={async (event) => {
           event.preventDefault()
-          let result = await this.props.instance.createPrescription(this.state.name, this.props.doctorAddress, this.state.patientAddress, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), this.state.validity, {from: this.props.doctorAddress})
-          console.log("result", result)
+          let result = await this.props.instance.updatePrescription(this.state.name, this.props.doctorAddress, this.state.patientAddress, this.state.medication, this.state.startDate, this.state.expirationDate, this.state.validity, {from: this.props.doctorAddress})
+          console.log("updatePrescription", result)
         }}>
           <label>
             name:
@@ -51,7 +52,8 @@ export default class CreatePrescription extends React.Component {
             expiration date:
             <DatePicker selected={this.state.expirationDate} onChange={(date) => this.setState({expirationDate: moment(date)})}/>
           </label>
-          <input type="submit" value="Create Prescription" />
+
+          <input type="submit" value="UUPDATE Prescription" />
         </form>
       </div>
     );

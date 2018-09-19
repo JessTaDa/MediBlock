@@ -4,10 +4,12 @@ import getWeb3 from './utils/getWeb3';
 import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
-import Toggle from 'react-toggle';
+import UpdatePrescription from './components/UpdatePrescriptions';
+
+// import Toggle from 'react-toggle';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import './css/toggle.css'
+// import './css/toggle.css'
 
 class App extends Component {
   constructor(props) {
@@ -26,8 +28,6 @@ class App extends Component {
       validity: true
     }
     this.handleClick = this.handleClick.bind(this);
-    this.handleValidity = this.handleValidity.bind(this);
-
   }
 
   componentWillMount() {
@@ -51,29 +51,17 @@ class App extends Component {
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, doctorAddress: accounts[0]})
-      console.log("accounts", accounts)
+      // console.log("accounts", accounts)
     })
   }
 
   async handleClick(event) {
     event.preventDefault();
     let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
-    console.log("rawPrescriptionIds", rawPrescriptionIds)
+    // console.log("rawPrescriptionIds", rawPrescriptionIds)
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
-    console.log("myPrescriptionIds", myPrescriptionIds)
+    // console.log("myPrescriptionIds", myPrescriptionIds)
     this.setState({myPrescriptionIds: myPrescriptionIds})
-  }
-
-  async handleValidity(event) {
-    if (this.state.validity === true) {
-      await this.setState({
-        validity: false
-
-      })
-      return
-    } await this.setState({
-        validity: true
-      })
   }
 
   render() {
@@ -85,13 +73,12 @@ class App extends Component {
          doctorAddress={this.state.doctorAddress}
          />
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
-           <DisplayPrescriptions Id={prescriptionId} instance={this.state.instance}/>
+           <DisplayPrescriptions
+           Id={prescriptionId} instance={this.state.instance}/>
          )}
         <button value="button" onClick={this.handleClick}>See Prescriptions</button>
-        <label>
-          <Toggle defaultChecked={this.state.validity} onChange={this.handleValidity} />
-        </label>
-        {console.log("validityRender", this.state.validity)}
+        <br />
+
        </div>
     )
   }
