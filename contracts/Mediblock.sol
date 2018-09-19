@@ -47,7 +47,7 @@ event UpdatePrescription(uint id, string name, address doctorAddress, address pa
     return doctorAddressToPrescriptionId[doctorAddress];
   }
 
-  function validity(uint id) external view returns (bool isValid) {
+  function isValid(uint id) external view returns (bool isValid) {
     if (prescriptions[id].expirationDate < block.timestamp
       || prescriptions[id].isValid == false) {
       return false;
