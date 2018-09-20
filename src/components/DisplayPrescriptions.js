@@ -14,14 +14,15 @@ export default class DisplayPrescriptions extends React.Component {
       startDate: null,
       expirationDate: null,
       isValid: null,
+      approvedByDoctor: true,
       instance: null
     }
-    this.handleValidity = this.handleValidity.bind(this);
+    this.handleDoctorApproval = this.handleDoctorApproval.bind(this);
   }
 
   async componentDidMount() {
-    let prescription = await this.props.instance.getPrescriptionsById(this.props.Id)
-    let expiration = await this.props.instance.isValid(this.props.Id)
+    let prescription = await this.props.instance.getPrescriptionsById(this.props.id)
+    let expiration = await this.props.instance.isValid(this.props.id)
     console.log("prescription", prescription)
 
     this.setState({
@@ -31,20 +32,22 @@ export default class DisplayPrescriptions extends React.Component {
       medication: prescription[3],
       startDate: prescription[4],
       expirationDate: prescription[5],
+      approvedByDoctor: prescription[6],
       isValid: expiration
-      // instance: this.props.instance
     })
     console.log("componentDidMount.this.props.instance", this.props.instance)
+    console.log("componentDidMount.this.state", this.state)
+
   }
 
-  async handleValidity(event) {
+  async handleDoctorApproval(event) {
     if (this.state.isValid === true) {
       await this.setState({
-        isValid: false
+        approvedByDoctor: false
       })
       return
     } await this.setState({
-        isValid: true
+        approvedByDoctor: true
       })
   }
 
@@ -58,15 +61,19 @@ export default class DisplayPrescriptions extends React.Component {
         <li>startDate: {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</li>
         <li>expirationDate: {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</li>
         <li>isValid: {JSON.stringify(this.state.isValid)}</li>
+        <li>approvedByDoctor: {JSON.stringify(this.state.approvedByDoctor)}</li>
         <br/>
-          <Toggle defaultChecked={this.state.isValid} onChange={this.handleValidity}/>
-          {console.log("IsValidRender", this.state.isValid)}
-          {console.log("this.state", this.state)}
+          <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/>
+          {console.log("approvedByDoctorRender.this.state", this.state)}
         <br/>
         <button value="button" onClick={async (event) => {
           event.preventDefault()
-          let updateMeds = await this.props.instance.updatePrescription(this.state.name, this.state.doctorAddress, this.state.doctorAddress, this.state.medication, this.state.startDate, this.state.expirationDate, this.state.isValid, {from: this.state.doctorAddress})
+          console.log("this.state.doctorAddress", this.state.doctorAddress)
+          console.log("this.props.id", this.props.id)
+
+          let updateMeds = await this.props.instance.setApprovedByDoctor(this.props.id, this.state.approvedByDoctor, {from: this.state.doctorAddress})
           console.log("updateMeds", updateMeds)
+
         }}>See Update Prescriptions</button>
       </div>
     );

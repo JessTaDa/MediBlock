@@ -4,12 +4,7 @@ import getWeb3 from './utils/getWeb3';
 import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
-import UpdatePrescription from './components/UpdatePrescriptions';
-
-// import Toggle from 'react-toggle';
-
 import 'react-datepicker/dist/react-datepicker.css';
-// import './css/toggle.css'
 
 class App extends Component {
   constructor(props) {
@@ -51,16 +46,15 @@ class App extends Component {
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, doctorAddress: accounts[0]})
-      // console.log("accounts", accounts)
     })
   }
 
   async handleClick(event) {
     event.preventDefault();
     let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
-    // console.log("rawPrescriptionIds", rawPrescriptionIds)
+    console.log("rawPrescriptionIds", rawPrescriptionIds)
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
-    // console.log("myPrescriptionIds", myPrescriptionIds)
+    console.log("myPrescriptionIds", myPrescriptionIds)
     this.setState({myPrescriptionIds: myPrescriptionIds})
   }
 
@@ -74,7 +68,8 @@ class App extends Component {
          />
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
            <DisplayPrescriptions
-           Id={prescriptionId} instance={this.state.instance}/>
+           id={prescriptionId}
+           instance={this.state.instance}/>
          )}
         <button value="button" onClick={this.handleClick}>See Prescriptions</button>
         <br />

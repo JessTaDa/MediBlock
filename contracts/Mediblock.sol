@@ -3,10 +3,7 @@ pragma solidity ^0.4.24;
 /* contract Mediblock is ERC721Basic { */
 contract Mediblock {
 
-event NewPrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate, bool isValid);
-event UpdatePrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate, bool isValid);
-
-
+event NewPrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate, bool approvedByDoctor);
 
   struct Prescription {
     string name;
@@ -15,7 +12,7 @@ event UpdatePrescription(uint id, string name, address doctorAddress, address pa
     string medication;
     uint StartDate;
     uint expirationDate;
-    bool isValid;
+    bool approvedByDoctor;
   }
 
   mapping(address => uint[]) doctorAddressToPrescriptionId;
@@ -24,36 +21,30 @@ event UpdatePrescription(uint id, string name, address doctorAddress, address pa
 
   constructor() public {}
 
-  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _isValid) external {
+  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _approvedByDoctor) external {
     require( _doctorAddress == msg.sender);
-    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid )) - 1;
+    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _approvedByDoctor )) - 1;
     doctorAddressToPrescriptionId[_doctorAddress].push(id);
-    emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid);
+    emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _approvedByDoctor);
   }
 
-  function updatePrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _isValid) external {
-    require( _doctorAddress == msg.sender);
-    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid )) - 1;
-    doctorAddressToPrescriptionId[_doctorAddress].push(id);
-    emit UpdatePrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _isValid);
-  }
-
-
-  function getPrescriptionsById(uint id) external view returns (string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _isValid) {
-    return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate, prescriptions[id].isValid);
+  function getPrescriptionsById(uint id) external view returns (string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool approvedByDoctor) {
+    return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate, prescriptions[id].approvedByDoctor);
   }
 
   function getPrescriptionsByAddress(address doctorAddress) external view returns(uint[] ids) {
     return doctorAddressToPrescriptionId[doctorAddress];
   }
 
-  function isValid(uint id) external view returns (bool isValid) {
-    if (prescriptions[id].expirationDate < block.timestamp
-      || prescriptions[id].isValid == false) {
+  function isValid(uint id) external view returns (bool) {
+    if (prescriptions[id].expirationDate < block.timestamp){
       return false;
-    } else {
-      return true;
     }
+      return true;
+  }
+
+  function setApprovedByDoctor(uint id, bool approvedByDoctor) external {
+      prescriptions[id].approvedByDoctor = approvedByDoctor;
   }
 
 

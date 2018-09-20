@@ -14,7 +14,7 @@ export default class CreatePrescription extends React.Component {
       medication: "",
       startDate: moment(),
       expirationDate: moment(),
-      validity: true
+      approvedByDoctor: true
     }
   }
 
@@ -24,7 +24,7 @@ export default class CreatePrescription extends React.Component {
         <p>Create new prescription below:</p>
         <form onSubmit={async (event) => {
           event.preventDefault()
-          let result = await this.props.instance.createPrescription(this.state.name, this.props.doctorAddress, this.state.patientAddress, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), this.state.validity, {from: this.props.doctorAddress})
+          let result = await this.props.instance.createPrescription(this.state.name, this.props.doctorAddress, this.state.patientAddress, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), this.state.approvedByDoctor, {from: this.props.doctorAddress})
           console.log("result", result)
         }}>
           <label>
