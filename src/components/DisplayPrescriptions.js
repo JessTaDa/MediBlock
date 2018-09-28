@@ -41,14 +41,17 @@ export default class DisplayPrescriptions extends React.Component {
   }
 
   async handleDoctorApproval(event) {
-    if (this.state.isValid === true) {
+    if (this.state.approvedByDoctor === true) {
       await this.setState({
         approvedByDoctor: false
       })
       return
-    } await this.setState({
+    } else if (this.state.approvedByDoctor === false) {
+      await this.setState({
         approvedByDoctor: true
       })
+      return
+    }
   }
 
   render(props) {

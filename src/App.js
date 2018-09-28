@@ -73,7 +73,7 @@ class App extends Component {
            id={prescriptionId}
            instance={this.state.instance}/>
          )}
-        <button value="button" onClick={this.handleClick}>See Prescriptions</button>
+        <button value="button" onClick={this.handleClick}>See My Prescriptions</button>
         <br />
        </div>
     )
