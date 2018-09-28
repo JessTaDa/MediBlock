@@ -23,6 +23,8 @@ class App extends Component {
       validity: true
     }
     this.handleClick = this.handleClick.bind(this);
+    this.handleDocClick = this.handleDocClick.bind(this);
+
   }
 
   componentWillMount() {
@@ -51,7 +53,18 @@ class App extends Component {
 
   async handleClick(event) {
     event.preventDefault();
-    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
+    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByPatientAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
+    console.log("rawPrescriptionIds", rawPrescriptionIds)
+    let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
+    console.log("myPrescriptionIds", myPrescriptionIds)
+    this.setState({myPrescriptionIds: myPrescriptionIds})
+  }
+
+  async handleDocClick(event) {
+    event.preventDefault();
+    console.log("this.state.doctorAddress", this.state.doctorAddress)
+    console.log("this.state.instance", this.state.instance)
+    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByDoctorAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
     console.log("rawPrescriptionIds", rawPrescriptionIds)
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
     console.log("myPrescriptionIds", myPrescriptionIds)
@@ -75,6 +88,8 @@ class App extends Component {
          )}
         <button value="button" onClick={this.handleClick}>See My Prescriptions</button>
         <br />
+        <button value="button" onClick={this.handleDocClick}>My created Prescriptions</button>
+
        </div>
     )
   }

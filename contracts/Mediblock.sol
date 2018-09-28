@@ -35,8 +35,12 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
     return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate, prescriptions[id].approvedByDoctor);
   }
 
-  function getPrescriptionsByAddress(address patientAddress) external view returns(uint[] ids) {
+  function getPrescriptionsByPatientAddress(address patientAddress) external view returns(uint[] ids) {
     return patientAddressToPrescriptionId[patientAddress];
+  }
+
+  function getPrescriptionsByDoctorAddress(address doctorAddress) external view returns(uint[] ids) {
+    return doctorAddressToPrescriptionId[doctorAddress];
   }
 
   function isValid(uint id) external view returns (bool) {
