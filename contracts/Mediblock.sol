@@ -16,6 +16,7 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
   }
 
   mapping(address => uint[]) doctorAddressToPrescriptionId;
+  mapping(address => uint[]) patientAddressToPrescriptionId;
 
   Prescription[] public prescriptions;
 
@@ -25,6 +26,8 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
     require( _doctorAddress == msg.sender);
     uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _approvedByDoctor )) - 1;
     doctorAddressToPrescriptionId[_doctorAddress].push(id);
+    patientAddressToPrescriptionId[_patientAddress].push(id);
+
     emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _approvedByDoctor);
   }
 
@@ -32,8 +35,8 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
     return (prescriptions[id].name, prescriptions[id].doctorAddress, prescriptions[id].patientAddress, prescriptions[id].medication, prescriptions[id].StartDate, prescriptions[id].expirationDate, prescriptions[id].approvedByDoctor);
   }
 
-  function getPrescriptionsByAddress(address doctorAddress) external view returns(uint[] ids) {
-    return doctorAddressToPrescriptionId[doctorAddress];
+  function getPrescriptionsByAddress(address patientAddress) external view returns(uint[] ids) {
+    return patientAddressToPrescriptionId[patientAddress];
   }
 
   function isValid(uint id) external view returns (bool) {

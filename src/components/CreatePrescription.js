@@ -28,29 +28,34 @@ export default class CreatePrescription extends React.Component {
           console.log("result", result)
         }}>
           <label>
-            name:
+            Patient Name:
             <input type="text" onChange={event => this.setState({name: event.target.value})} />
           </label>
+          <br/>
           <br/>
           <label>
             doctorAddress:
             <input type="text" value={this.props.doctorAddress} />
           </label>
           <br/>
+          <br/>
           <label>
-            patientAddress:
+            Patient Address:
             <input type="text" value={this.state.patientAddress} onChange={event => this.setState({patientAddress: event.target.value})} />
           </label>
           <br/>
+          <br/>
           <label>
-            medication:
+            Medication:
             <input type="text" onChange={event => this.setState({medication: event.target.value})} />
           </label>
           <br/>
+          <br/>
           <label>
-            expiration date:
+            Expiration date:
             <DatePicker selected={this.state.expirationDate} onChange={(date) => this.setState({expirationDate: moment(date)})}/>
           </label>
+          <br/>
           <input type="submit" value="Create Prescription" />
         </form>
       </div>

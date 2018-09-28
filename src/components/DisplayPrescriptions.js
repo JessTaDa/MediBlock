@@ -63,18 +63,16 @@ export default class DisplayPrescriptions extends React.Component {
         <li>isValid: {JSON.stringify(this.state.isValid)}</li>
         <li>approvedByDoctor: {JSON.stringify(this.state.approvedByDoctor)}</li>
         <br/>
-          <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/>
-          {console.log("approvedByDoctorRender.this.state", this.state)}
+        <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/>
+        {console.log("approvedByDoctorRender.this.state", this.state)}
         <br/>
         <button value="button" onClick={async (event) => {
           event.preventDefault()
           console.log("this.state.doctorAddress", this.state.doctorAddress)
           console.log("this.props.id", this.props.id)
-
           let updateMeds = await this.props.instance.setApprovedByDoctor(this.props.id, this.state.approvedByDoctor, {from: this.state.doctorAddress})
           console.log("updateMeds", updateMeds)
-
-        }}>See Update Prescriptions</button>
+        }}>Update approvedByDoctor for Prescription</button>
       </div>
     );
   }

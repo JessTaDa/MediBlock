@@ -66,6 +66,8 @@ class App extends Component {
          instance={this.state.instance}
          doctorAddress={this.state.doctorAddress}
          />
+         <br/>
+         <br/>
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
            <DisplayPrescriptions
            id={prescriptionId}
@@ -73,7 +75,6 @@ class App extends Component {
          )}
         <button value="button" onClick={this.handleClick}>See Prescriptions</button>
         <br />
-
        </div>
     )
   }
