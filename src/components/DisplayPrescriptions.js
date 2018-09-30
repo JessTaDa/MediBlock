@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import Toggle from 'react-toggle';
-import {Button, Row, CardPanel} from 'react-materialize';
+import {Button, CardPanel, Collection, CollectionItem} from 'react-materialize';
 
 import '../css/toggle.css'
 
@@ -59,17 +59,17 @@ export default class DisplayPrescriptions extends React.Component {
   render(props) {
     return (
       <div>
-<Row>
 <CardPanel className="teal lighten-4 black-text">
-<span>
-        <li>name: {this.state.name}</li>
-        <li>doctorAddress: {this.state.doctorAddress}</li>
-        <li>patientAddress: {this.state.patientAddress}</li>
-        <li>medication: {this.state.medication}</li>
-        <li>startDate: {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</li>
-        <li>expirationDate: {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</li>
-        <li>isValid: {JSON.stringify(this.state.isValid)}</li>
-        <li>approvedByDoctor: {JSON.stringify(this.state.approvedByDoctor)}</li>
+<Collection header='Prescription'>
+        <CollectionItem>name: {this.state.name}</CollectionItem>
+        <CollectionItem>doctorAddress: {this.state.doctorAddress}</CollectionItem>
+        <CollectionItem>patientAddress: {this.state.patientAddress}</CollectionItem>
+        <CollectionItem>medication: {this.state.medication}</CollectionItem>
+        <CollectionItem>startDate: {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</CollectionItem>
+        <CollectionItem>expirationDate: {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</CollectionItem>
+        <CollectionItem>isValid: {JSON.stringify(this.state.isValid)}</CollectionItem>
+        <CollectionItem>approvedByDoctor: {JSON.stringify(this.state.approvedByDoctor)}</CollectionItem>
+</Collection>
         <br/>
         <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/>
         {console.log("approvedByDoctorRender.this.state", this.state)}
@@ -81,11 +81,8 @@ export default class DisplayPrescriptions extends React.Component {
           let updateMeds = await this.props.instance.setApprovedByDoctor(this.props.id, this.state.approvedByDoctor, {from: this.state.doctorAddress})
           console.log("updateMeds", updateMeds)
         }}>Update approvedByDoctor for Prescription</Button>
-        </span>
         </CardPanel>
-
-</Row>
-
+        <br/>
       </div>
     );
   }
