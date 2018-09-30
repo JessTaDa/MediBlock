@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import Toggle from 'react-toggle';
-import {Button} from 'react-materialize';
+import {Button, Row, CardPanel} from 'react-materialize';
 
 import '../css/toggle.css'
 
@@ -59,6 +59,9 @@ export default class DisplayPrescriptions extends React.Component {
   render(props) {
     return (
       <div>
+<Row>
+<CardPanel className="teal lighten-4 black-text">
+<span>
         <li>name: {this.state.name}</li>
         <li>doctorAddress: {this.state.doctorAddress}</li>
         <li>patientAddress: {this.state.patientAddress}</li>
@@ -71,8 +74,6 @@ export default class DisplayPrescriptions extends React.Component {
         <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/>
         {console.log("approvedByDoctorRender.this.state", this.state)}
         <br/>
-
-
         <Button class="btn waves-effect waves-light" type="submit" name="action" value="button" onClick={async (event) => {
           event.preventDefault()
           console.log("this.state.doctorAddress", this.state.doctorAddress)
@@ -80,6 +81,11 @@ export default class DisplayPrescriptions extends React.Component {
           let updateMeds = await this.props.instance.setApprovedByDoctor(this.props.id, this.state.approvedByDoctor, {from: this.state.doctorAddress})
           console.log("updateMeds", updateMeds)
         }}>Update approvedByDoctor for Prescription</Button>
+        </span>
+        </CardPanel>
+
+</Row>
+
       </div>
     );
   }
