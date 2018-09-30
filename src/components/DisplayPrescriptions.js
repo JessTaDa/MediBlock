@@ -55,15 +55,15 @@ export default class DisplayPrescriptions extends React.Component {
     return (
       <div>
         <CardPanel className="teal lighten-4 black-text">
-          <Collection header='Prescription'>
-            <CollectionItem>name: {this.state.name}</CollectionItem>
-            <CollectionItem>doctorAddress: {this.state.doctorAddress}</CollectionItem>
-            <CollectionItem>patientAddress: {this.state.patientAddress}</CollectionItem>
-            <CollectionItem>medication: {this.state.medication}</CollectionItem>
-            <CollectionItem>startDate: {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</CollectionItem>
-            <CollectionItem>expirationDate: {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</CollectionItem>
-            <CollectionItem>isValid: {JSON.stringify(this.state.isValid)}</CollectionItem>
-            <CollectionItem>approvedByDoctor: {JSON.stringify(this.state.approvedByDoctor)} <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/></CollectionItem>
+          <Collection header={this.state.medication}>
+            <CollectionItem><strong>Patient Name:</strong> {this.state.name}</CollectionItem>
+            <CollectionItem><strong>Prescribed by:</strong> {this.state.doctorAddress}</CollectionItem>
+            <CollectionItem><strong>Prescription Owner:</strong> {this.state.patientAddress}</CollectionItem>
+            <CollectionItem><strong>Medication:</strong> {this.state.medication}</CollectionItem>
+            <CollectionItem><strong>Date Created:</strong> {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</CollectionItem>
+            <CollectionItem><strong>Expiration Date:</strong> {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</CollectionItem>
+            <CollectionItem><strong>Prescription still valid?:</strong> {JSON.stringify(this.state.isValid)}</CollectionItem>
+            <CollectionItem><strong>Approved by Doctor?:</strong> {JSON.stringify(this.state.approvedByDoctor)} <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/></CollectionItem>
           </Collection>
         <Button class="btn waves-effect waves-light" type="submit" name="action" value="button" onClick={async (event) => {
           event.preventDefault()
