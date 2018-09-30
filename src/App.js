@@ -55,45 +55,32 @@ class App extends Component {
   async handleClick(event) {
     event.preventDefault();
     let rawPrescriptionIds = await this.state.instance.getPrescriptionsByPatientAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
-    console.log("rawPrescriptionIds", rawPrescriptionIds)
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
-    console.log("myPrescriptionIds", myPrescriptionIds)
     this.setState({myPrescriptionIds: myPrescriptionIds})
   }
 
   async handleDocClick(event) {
     event.preventDefault();
-    console.log("this.state.doctorAddress", this.state.doctorAddress)
-    console.log("this.state.instance", this.state.instance)
     let rawPrescriptionIds = await this.state.instance.getPrescriptionsByDoctorAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
-    console.log("rawPrescriptionIds", rawPrescriptionIds)
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
-    console.log("myPrescriptionIds", myPrescriptionIds)
     this.setState({myPrescriptionIds: myPrescriptionIds})
   }
 
   render() {
      return (
        <div>
-         <CreatePrescription
-         id={this.state.id}
-         instance={this.state.instance}
-         doctorAddress={this.state.doctorAddress}
-         />
-           <br/>
-           <br/>
-           {this.state.myPrescriptionIds.map((prescriptionId, index) =>
-             <DisplayPrescriptions
-             id={prescriptionId}
-             instance={this.state.instance}/>
-           )}
-          <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleClick}>See My Prescriptions</Button>
-          <br/>
-          <br/>
-          <br/>
-          <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleDocClick}>My created Prescriptions</Button>
-          </div>
-    )
+         <CreatePrescription id={this.state.id} instance={this.state.instance} doctorAddress={this.state.doctorAddress}/>
+         <br/>
+         <br/>
+         {this.state.myPrescriptionIds.map((prescriptionId, index) =>
+           <DisplayPrescriptions id={prescriptionId} instance={this.state.instance}/>
+         )}
+         <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleClick}>See My Prescriptions</Button>
+         <br/>
+         <br/>
+         <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleDocClick}>My created Prescriptions</Button>
+       </div>
+     )
   }
 }
 
