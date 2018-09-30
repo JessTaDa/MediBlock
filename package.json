@@ -52,10 +52,12 @@
   "dependencies": {
     "@material-ui/core": "^3.0.3",
     "dotenv": "^2.0.0",
+    "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.22.2",
     "react": "^15.4.2",
     "react-datepicker": "^1.6.0",
     "react-dom": "^15.4.2",
+    "react-materialize": "^2.4.5",
     "react-toggle": "^4.0.2"
   },
   "scripts": {

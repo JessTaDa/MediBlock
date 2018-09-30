@@ -4,6 +4,7 @@ import getWeb3 from './utils/getWeb3';
 import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
+import {Button} from 'react-materialize';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class App extends Component {
@@ -79,18 +80,19 @@ class App extends Component {
          instance={this.state.instance}
          doctorAddress={this.state.doctorAddress}
          />
-         <br/>
-         <br/>
-         {this.state.myPrescriptionIds.map((prescriptionId, index) =>
-           <DisplayPrescriptions
-           id={prescriptionId}
-           instance={this.state.instance}/>
-         )}
-        <button value="button" onClick={this.handleClick}>See My Prescriptions</button>
-        <br />
-        <button value="button" onClick={this.handleDocClick}>My created Prescriptions</button>
-
-       </div>
+           <br/>
+           <br/>
+           {this.state.myPrescriptionIds.map((prescriptionId, index) =>
+             <DisplayPrescriptions
+             id={prescriptionId}
+             instance={this.state.instance}/>
+           )}
+          <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleClick}>See My Prescriptions</Button>
+          <br/>
+          <br/>
+          <br/>
+          <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleDocClick}>My created Prescriptions</Button>
+          </div>
     )
   }
 }
