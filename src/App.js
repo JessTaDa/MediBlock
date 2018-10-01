@@ -4,7 +4,7 @@ import getWeb3 from './utils/getWeb3';
 import moment from 'moment';
 import CreatePrescription from './components/CreatePrescription';
 import DisplayPrescriptions from './components/DisplayPrescriptions';
-
+import {Button} from 'react-materialize';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class App extends Component {
@@ -20,9 +20,12 @@ class App extends Component {
       doctorAddress: null,
       prescriptionArray: [],
       expirationDate: moment(),
-      myPrescriptionIds: []
+      myPrescriptionIds: [],
+      validity: true
     }
     this.handleClick = this.handleClick.bind(this);
+    this.handleDocClick = this.handleDocClick.bind(this);
+
   }
 
   componentWillMount() {
@@ -46,33 +49,37 @@ class App extends Component {
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, doctorAddress: accounts[0]})
-      console.log("accounts", accounts)
     })
   }
 
   async handleClick(event) {
     event.preventDefault();
-    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
-    console.log("rawPrescriptionIds", rawPrescriptionIds)
+    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByPatientAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
     let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
-    console.log("myPrescriptionIds", myPrescriptionIds)
+    this.setState({myPrescriptionIds: myPrescriptionIds})
+  }
+
+  async handleDocClick(event) {
+    event.preventDefault();
+    let rawPrescriptionIds = await this.state.instance.getPrescriptionsByDoctorAddress(this.state.doctorAddress, {from: this.state.doctorAddress})
+    let myPrescriptionIds = await rawPrescriptionIds.map(bignum => bignum.toNumber())
     this.setState({myPrescriptionIds: myPrescriptionIds})
   }
 
   render() {
      return (
        <div>
-         <CreatePrescription
-         id={this.state.id}
-         instance={this.state.instance}
-         doctorAddress={this.state.doctorAddress}
-         />
+         <CreatePrescription id={this.state.id} instance={this.state.instance} doctorAddress={this.state.doctorAddress}/>
+         <br/>
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
-           <DisplayPrescriptions Id={prescriptionId} instance={this.state.instance}/>
+           <DisplayPrescriptions id={prescriptionId} instance={this.state.instance}/>
          )}
-        <button value="button" onClick={this.handleClick}>See Prescriptions</button>
+         <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleClick}>See My Prescriptions</Button>
+         <br/>
+         <br/>
+         <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleDocClick}>My created Prescriptions</Button>
        </div>
-    )
+     )
   }
 }
 
