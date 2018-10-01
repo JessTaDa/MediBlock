@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import {Button, Row, Input} from 'react-materialize';
+import {Button, Input} from 'react-materialize';
 
 export default class CreatePrescription extends React.Component {
   constructor(props) {

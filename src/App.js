@@ -71,7 +71,6 @@ class App extends Component {
        <div>
          <CreatePrescription id={this.state.id} instance={this.state.instance} doctorAddress={this.state.doctorAddress}/>
          <br/>
-         <br/>
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
            <DisplayPrescriptions id={prescriptionId} instance={this.state.instance}/>
          )}
