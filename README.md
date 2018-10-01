@@ -72,7 +72,9 @@ Invalidated prescriptions should return false for **isValid().** Update the Dapp
 
 ## Preview
 
-![Here is a preview of the app](https://user-images.githubusercontent.com/17763644/46294165-12b96280-c58d-11e8-8a7b-1877a322273c.png)
+![Here is a preview of the app](https://user-images.githubusercontent.com/17763644/46294372-83f91580-c58d-11e8-99f1-66470b25fa93.png)
+
+
 
 ## Future features
 
