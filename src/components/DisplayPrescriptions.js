@@ -63,12 +63,12 @@ export default class DisplayPrescriptions extends React.Component {
             <CollectionItem><strong>Date Created:</strong> {moment.unix(this.state.startDate).format("DD/MM/YYYY")}</CollectionItem>
             <CollectionItem><strong>Expiration Date:</strong> {moment.unix(this.state.expirationDate).format("DD/MM/YYYY")}</CollectionItem>
             <CollectionItem><strong>Prescription still valid?:</strong> {JSON.stringify(this.state.isValid)}</CollectionItem>
-            <CollectionItem><strong>Approved by Doctor?:</strong> {JSON.stringify(this.state.approvedByDoctor)} <Toggle defaultChecked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/></CollectionItem>
+            <CollectionItem><strong>Approved by Doctor?:</strong> {JSON.stringify(this.state.approvedByDoctor)}
+              <Toggle checked={this.state.approvedByDoctor} onChange={this.handleDoctorApproval}/></CollectionItem>
           </Collection>
         <Button class="btn waves-effect waves-light" type="submit" name="action" value="button" onClick={async (event) => {
           event.preventDefault()
-          let updateMeds = await this.props.instance.setApprovedByDoctor(this.props.id, this.state.approvedByDoctor, {from: this.state.doctorAddress})
-          console.log("updateMeds", updateMeds)
+          await this.props.instance.setApprovedByDoctor(this.props.id, this.state.approvedByDoctor, {from: this.state.doctorAddress})
         }}>Update prescription</Button>
         </CardPanel>
         <br/>
