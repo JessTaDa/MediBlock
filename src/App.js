@@ -45,7 +45,7 @@ class App extends Component {
     const contract = require('truffle-contract')
     const mediblock = contract(Mediblock)
     mediblock.setProvider(this.state.web3.currentProvider)
-    var initialMediblockInstance
+    var initialMediblockInstance  
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, doctorAddress: accounts[0]})
