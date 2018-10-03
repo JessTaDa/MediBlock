@@ -70,6 +70,12 @@ Allow doctors to invalidate prescriptions that they have issued.
 
 Invalidated prescriptions should return false for **isValid().** Update the Dapp to display invalid prescriptions and allow doctors to revoke them.
 
+## Preview
+
+![Here is a preview of the app](https://user-images.githubusercontent.com/17763644/46294372-83f91580-c58d-11e8-99f1-66470b25fa93.png)
+
+
+
 ## Future features
 
 **Stage 6: Pharmacies and Refills**  
@@ -85,7 +91,7 @@ Add a number of refills, which is set by the doctor when creating the prescripti
 | Expiration Date:  | Date (Integer)
 | Is Invalidated:  | Boolean
 | Refills:  | Integer
- 
+
 
 A user can send their prescription to a “pharmacist” by calling **sendToPharmacist()**. This should emit a DispenseRequest event which contains the address of the pharmacist.
 

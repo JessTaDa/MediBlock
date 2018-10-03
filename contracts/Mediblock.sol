@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 /* contract Mediblock is ERC721Basic { */
 contract Mediblock {
 
-event NewPrescription(uint id, string name, address doctorAddress, address patientAddress, string medication, uint date, uint _expirationDate, bool approvedByDoctor);
+event NewPrescription(uint id);
 
   struct Prescription {
     string name;
@@ -22,13 +22,12 @@ event NewPrescription(uint id, string name, address doctorAddress, address patie
 
   constructor() public {}
 
-  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool _approvedByDoctor) external {
+  function createPrescription(string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate) external {
     require( _doctorAddress == msg.sender);
-    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _approvedByDoctor )) - 1;
+    uint id = prescriptions.push(Prescription(_name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, true )) - 1;
     doctorAddressToPrescriptionId[_doctorAddress].push(id);
     patientAddressToPrescriptionId[_patientAddress].push(id);
-
-    emit NewPrescription(id, _name, _doctorAddress, _patientAddress, _medication, _date, _expirationDate, _approvedByDoctor);
+    emit NewPrescription(id);
   }
 
   function getPrescriptionsById(uint id) external view returns (string _name, address _doctorAddress, address _patientAddress, string _medication, uint _date, uint _expirationDate, bool approvedByDoctor) {
