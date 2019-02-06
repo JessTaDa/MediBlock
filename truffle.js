@@ -9,5 +9,10 @@ module.exports = {
       gasPrice: 100000000000,
       network_id: "*" // Match any network id
     }
+  },
+  compilers: {
+    solc: {
+      version: "0.4.24",
+    },
   }
 };
