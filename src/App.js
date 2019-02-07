@@ -45,7 +45,7 @@ class App extends Component {
     const contract = require('truffle-contract')
     const mediblock = contract(Mediblock)
     mediblock.setProvider(this.state.web3.currentProvider)
-    var initialMediblockInstance  
+    var initialMediblockInstance
     this.state.web3.eth.getAccounts(async (error, accounts) => {
       initialMediblockInstance = await mediblock.deployed();
       this.setState({instance:initialMediblockInstance, doctorAddress: accounts[0]})
@@ -69,6 +69,10 @@ class App extends Component {
   render() {
      return (
        <div>
+       <h3>Welcome to Mediblock</h3>
+       <h7>A decentralised application that allows you to create and view medical prescriptions on the blockchain</h7>
+       <br/>
+       <br/>
          <CreatePrescription id={this.state.id} instance={this.state.instance} doctorAddress={this.state.doctorAddress}/>
          <br/>
          {this.state.myPrescriptionIds.map((prescriptionId, index) =>
