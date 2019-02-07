@@ -1,112 +1,63 @@
-# **Prescriptions Dapp Project Requirements**
+# MediBlock
+A decentralised application for the creation and management of medical prescriptions.
 
-The goal is to have a Dapp backed by an ethereum smart contract that can replace paper prescriptions. This is a learning exercise to get familiar with building DAPPS and there will be a follow on tutorial to come.
-
-
-## Stage 1: Contract
-
-
-Create a ERC-721 compatible contract representing a prescription with the following attributes:
-
-| |Prescription |
-|--|--|
-|  Patient Name: | String  
-| Patient Address:  | Address
-|  Medication: | String  
-|  Date Created: | Date (Integer)
-
-At this stage, prescriptions should be made by the patient itself, and should not be able to be transferred.
-
-Create the contract and a few test cases.
-
-## Stage 2: DApp
-
-Create a DApp where patients can create prescriptions and view all prescriptions they have access to.
-
-## Stage 3: Expiration Date
-Add an expiration date to the prescription.
-
-| |Prescription |
-|--|--|
-|  Patient Name: | String  
-| Patient Address:  | Address
-|  Medication: | String  
-|  Date Created: | Date (Integer)
-| Expiration Date:  | Date (Integer)
-
-The contract should have a method **isValid()** that returns true if the expiration date hasn’t passed.
-
-Update the Dapp to display the expiration date and whether the prescription is still valid.
-
-## Stage 4: Doctors
-
-Add a doctor to the prescription. Now doctors can create prescriptions and assign them to patients. A doctor can not assign prescriptions to themselves.
-
-| |Prescription |
-|--|--|
-|  Patient Name: | String  
-| Doctor Address:  | Address  
-| Patient Address:  | Address
-|  Medication: | String  
-|  Date Created: | Date (Integer)
-| Expiration Date:  | Date (Integer)
-
-Update the Dapp to allow doctors to create prescriptions.
-At this stage, any user can act as a doctor.
-
-## Stage 5: Invalidate prescription
-Allow doctors to invalidate prescriptions that they have issued.
-
-| |Prescription |
-|--|--|
-|  Patient Name: | String  
-| Doctor Address:  | Address  
-| Patient Address:  | Address
-|  Medication: | String  
-|  Date Created: | Date (Integer)
-| Expiration Date:  | Date (Integer)
-| Is Invalidated:  | Boolean
+# Design Process
+User stories were drafted to meet the user basic requirements for the task. See ```Requirements.md``` for project requirements.
 
 
-Invalidated prescriptions should return false for **isValid().** Update the Dapp to display invalid prescriptions and allow doctors to revoke them.
+# Installation and Setup
 
-## Preview
+### Truffle
+Install truffle on your device as per the docs here: http://truffleframework.com/docs.
 
-![Here is a preview of the app](https://user-images.githubusercontent.com/17763644/46294372-83f91580-c58d-11e8-99f1-66470b25fa93.png)
+### Ganache
+Install and run Ganache. More information on installation found [here](npm install -g ganache-cli).
+The project has been created and tested using ganache desktop app on port 8545. To change this port (i.e. if you are using ganache desktop or truffle develop) please go to ```truffle-config.js``` in the root folder and change the port number at ```port: 8545 ``` to match the port you desire. Make sure your Ganache accounts are up an running with available ETH balances.
+
+### Metamask
+Install the Metamask Google Chrome Browser extension from [here](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en) and follow instructions to set up accounts. Ensure accounts on Metamask are linked to the accounts running on Ganache and connected on the correct network. You can see this by checking if the addresses and balances in your ganache-cli instance and Metamask match.
+
+### Launch Dapp!
+You're ready to run the project! Ensure Google Chrome is open and that your are signed into Metamask, with your accounts matching your ganache accounts.
+
+1. Make a new directory and clone the project by running ```$ git clone https://github.com/JessTaDa/mediblockReact.git```
+
+2. In your terminal window, navigate to project root folder and run ```truffle compile```.
+
+3.  Once compilation is successful, run ```truffle migrate --reset```.
+
+4. Still in the project root folder, run ```npm install```. Then ```npm run start```. A new tab in google chrome should open and you should see the following page running on ```localhost:3000```:
+
+![screen shot 2019-02-07 at 2 54 54 pm](https://user-images.githubusercontent.com/17763644/52389618-69f5b380-2ae8-11e9-9384-825d700dd47a.png)
+
+*NOTE: Your current address will always be the address displayed at the top of the page. When switching between accounts on Metamask, it is important to ensure the address is the correct one for you.*
+
+Currently the app requires you to refresh the page each time you are switching between accounts in Metamask. Future versions of this app will not require this.
 
 
+# Interacting with the Dapp
+### Creating a new prescription
+Simply fill out the 'Create New Prescription' form with the
+- Patient Full Name: *Name of the Patient*
+- Patient Address: *Public ETH address of the patient*
+- Medication: *Name of the medication to be precscribed*
+- Expiration Date: *Select when this prescription will expire and no longer be valid*
 
-## Future features
+When you are happy with the inputs for your new prescription, click on the 'Create Prescription' button.
 
-**Stage 6: Pharmacies and Refills**  
-Add a number of refills, which is set by the doctor when creating the prescription.
+A Metamask modal will pop up displaying the transaction details. Check this is correct, then proceed with the transaction. Once the transaction has successfully gone through and your prescription has been created, you can view it (along with all your other created prescriptions) by clicking on the 'My Created Prescriptions' button.
 
-| |Prescription |
-|--|--|
-|  Patient Name: | String  
-| Doctor Address:  | Address  
-| Patient Address:  | Address
-|  Medication: | String  
-|  Date Created: | Date (Integer)
-| Expiration Date:  | Date (Integer)
-| Is Invalidated:  | Boolean
-| Refills:  | Integer
+![screen shot 2019-02-07 at 2 41 48 pm](https://user-images.githubusercontent.com/17763644/52389749-2780a680-2ae9-11e9-893d-bf9b585e2150.png)
+
+### Reviewing Prescription validity
+If the browser session is your address, you are able to view your created prescriptions. You are able to change the validity of your created prescriptions using the toggle. Once you have updated the toggle, click on the 'Update Prescription' button to send this update to the blockchain.
+
+![screen shot 2019-02-07 at 2 43 18 pm](https://user-images.githubusercontent.com/17763644/52390011-5e0af100-2aea-11e9-885f-440816b32c99.png)
 
 
-A user can send their prescription to a “pharmacist” by calling **sendToPharmacist()**. This should emit a DispenseRequest event which contains the address of the pharmacist.
+Clicking this will trigger another Metamask modal, asking to confirm the transaction. Once the transaction succeeds, the validity of the prescription will be updated. Future versions of this app will make this feature easier to see, as currently it is not displayed very clearly.
 
-The pharmacist can then call a method **dispense()** on the contract. This will reduce the number of remaining refills, and emit a Dispense event, which the address of the pharmacist.
 
-Once a prescription reaches 0 refills, isValid should return false. At this stage, any user can be a pharmacist.
-
-Update the Dapp to allow users to send prescriptions to pharmacists and allow pharmacists to dispense prescriptions.
-
-**Stage 7: Government**
-
-The contract should store a single address representing the government, and a list of addresses corresponding to doctors and pharmacists. This government official should be able to call a functions setDoctor and setPharmacist to add or remove the address from that list.
-
-Update isValid to return false if the doctor who assigned the prescription is no longer a valid doctor. Don’t allow pharmacists to dispense prescriptions if they’re not on the list of approved pharmacists.
-
-Allow the government user to transfer their authority to another address.
-
-Update the Dapp to allow the government user to add and remove doctors and pharmacists from the list.
+# Future features
+### Automatic app refresh
+Currently users of the Dapp are required to manually refresh the page in the browser when changing between accounts in Metamask. A future feature would be to make this refresh automatic when a change in accounts has been detected.

@@ -28,6 +28,7 @@ export default class CreatePrescription extends React.Component {
       <br/>
       <h7>Fill in the below form to create a new prescription for a patient:</h7>
       <h5>Create New Prescription</h5>
+      <br/>
         <form onSubmit={async (event) => {
           event.preventDefault()
           await this.props.instance.createPrescription(this.state.name, this.props.doctorAddress, this.state.patientAddress, this.state.medication, this.state.startDate.unix(), this.state.expirationDate.unix(), {from: this.props.doctorAddress})

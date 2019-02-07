@@ -69,15 +69,15 @@ class App extends Component {
   render() {
      return (
        <div>
-       <h3>Welcome to Mediblock</h3>
-       <h7>A decentralised application that allows you to create and view medical prescriptions on the blockchain</h7>
-       <br/>
-       <br/>
+         <h3>Welcome to Mediblock</h3>
+         <h7>A decentralised application that allows you to create and view medical prescriptions on the blockchain</h7>
+         <br/>
+         <br/>
          <CreatePrescription id={this.state.id} instance={this.state.instance} doctorAddress={this.state.doctorAddress}/>
          <br/>
-         {this.state.myPrescriptionIds.map((prescriptionId, index) =>
-           <DisplayPrescriptions id={prescriptionId} instance={this.state.instance}/>
-         )}
+           {this.state.myPrescriptionIds.map((prescriptionId, index) =>
+             <DisplayPrescriptions id={prescriptionId} instance={this.state.instance}/>
+           )}
          <Button class="btn waves-effect waves-light" type="submit" name="action" value="Button" onClick={this.handleClick}>See My Prescriptions</Button>
          <br/>
          <br/>
